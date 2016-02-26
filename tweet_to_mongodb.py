@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 import json
 
-FILE_NAME = "output.json"
+FILE_NAME = "gop_debate.json"
 
 if __name__ == "__main__":
 	client = MongoClient('localhost',27017)
@@ -15,4 +15,4 @@ if __name__ == "__main__":
 			collection.insert(tweet)
 			x+=1
 			if x % 1000 == 0:
-				print str(x) + " out of " + num_lines
+				print str(x) + " out of " + str(num_lines)
