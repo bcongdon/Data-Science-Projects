@@ -5,3 +5,5 @@ scraped_history.csv
 watch_later_data.csv
 *.pyc
 youtube_config.json
+uber-raw-data-apr14.csv
+.Rhistory
