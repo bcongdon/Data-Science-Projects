@@ -7,6 +7,7 @@ head(data)
 datetimes <- strptime(data$Date.Time, format="%m/%d/%Y %H:%M:%S")
 times <- strptime(strftime(datetimes, '%X'), format='%X')
 data$just_times = times
+
 dens <- density(as.numeric(data$Date.Time))
 plot(dens)
 
@@ -28,3 +29,8 @@ plt <- ggplot(data, aes(x=Lon, y=Lat)) +
 plt
 png("./nyc-uber-pickups.png", w=800, h=800, res=150)
 dev.off()
+
+library(ggmap)
+map <- get_map(location="New York City", zoom=7)
+ggmap(map) + 
+  geom_point(aes(x = Lon, y = Lat), data = data, alpha=0.003)
