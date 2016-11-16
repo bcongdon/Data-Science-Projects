@@ -56,8 +56,11 @@ start <- min(data$just_times)
 data$bin <- cut(data$just_times, breaks = start + seq(0, 60*60*24, by = 60*60), labels = 0:23)
 plot_time(0)
 
-saveGIF({
+full_plot <- function() {
   for(x in 0:23) {
     plot_time(x)
   }
-}, interval = 0.2)
+}
+
+saveGIF(full_plot(), interval = 0.2)
+saveVideo(full_plot(), interval = 0.2, ani.width = 800, ani.height = 600)
