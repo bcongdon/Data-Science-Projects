@@ -1,5 +1,7 @@
 library(ggplot2)
 library(scales)
+library(ggmap)
+
 
 data = read.csv("./uber-raw-data-apr14.csv")
 head(data)
@@ -30,7 +32,18 @@ plt
 png("./nyc-uber-pickups.png", w=800, h=800, res=150)
 dev.off()
 
-library(ggmap)
-map <- get_map(location="New York City", zoom=7)
-ggmap(map) + 
-  geom_point(aes(x = Lon, y = Lat), data = data, alpha=0.003)
+map <- get_map(location="New York City", zoom=12)
+
+plot_time <- function(cbin) {
+  ggmap(map) + 
+    geom_point(aes(x = Lon, y = Lat), data = subset(data, bin==cbin), alpha=0.01) + 
+    annotate("text", x=-74.075, y=40.785, label=paste(cbin, ":00", sep=''), size=16) +
+  ggsave(paste("hour-", toString(cbin), ".jpg", sep=''))
+}
+
+start <- min(data$just_times)
+data$bin <- cut(data$just_times, breaks = start + seq(0, 60*60*24, by = 60*60), labels = 0:23)
+#plot_time(10)
+for(x in 0:23) {
+  plot_time(x)
+}
