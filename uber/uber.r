@@ -34,8 +34,12 @@ plt
 png("./nyc-uber-pickups.png", w=800, h=800, res=150)
 dev.off()
 
-map <- get_map(location="New York City", zoom=12)
-
+map <- get_map(location="Empire State Building", zoom=12)
+map_theme <- theme(axis.line = element_blank(), axis.ticks = element_blank(),
+                   axis.title.x = element_blank(), axis.title.y = element_blank(),
+                   axis.text.x = element_blank(), axis.text.y = element_blank(),
+                   plot.title = element_text(size=20))
+  
 plot_time <- function(cbin) {
   str_int <- str_pad(toString(cbin), 2, pad='0')
   out_map <- ggmap(map) + 
@@ -43,7 +47,7 @@ plot_time <- function(cbin) {
     #stat_density2d(data = subset(data, bin==cbin), aes(x = Lon, y = Lat,  fill = ..level.., alpha = ..level..), size = 0.01, bins = 16, geom = 'polygon') +
     annotate("text", x=-74.025, y=40.785, label=paste(str_int, ":00", sep=''), size=16) +
     ggtitle("NYC Uber Pickups in April 2014") + 
-    theme(legend.position = "none", axis.title = element_blank())
+    map_theme
   #ggsave(paste("hour-", str_int, ".jpg", sep=''))
   print(out_map)
 }
