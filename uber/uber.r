@@ -38,22 +38,23 @@ map <- get_map(location="Empire State Building", zoom=12)
 map_theme <- theme(axis.line = element_blank(), axis.ticks = element_blank(),
                    axis.title.x = element_blank(), axis.title.y = element_blank(),
                    axis.text.x = element_blank(), axis.text.y = element_blank(),
-                   plot.title = element_text(size=20))
-  
+                   plot.title = element_text(size=26))
+start <- min(data$just_times)
+data$bin <- cut(data$just_times, breaks = start + seq(0, 60*60*24, by = 60*60), labels = 0:23)
+
 plot_time <- function(cbin) {
   str_int <- str_pad(toString(cbin), 2, pad='0')
+  label <- paste(str_int, ":00", sep='')
   out_map <- ggmap(map) + 
     geom_point(aes(x = Lon, y = Lat), data = subset(data, bin==cbin), alpha=0.01) +
     #stat_density2d(data = subset(data, bin==cbin), aes(x = Lon, y = Lat,  fill = ..level.., alpha = ..level..), size = 0.01, bins = 16, geom = 'polygon') +
-    annotate("text", x=-74.025, y=40.785, label=paste(str_int, ":00", sep=''), size=16) +
+    geom_label(x=-74.05, y=40.82, label=label, fill='white', size=16) +
     ggtitle("NYC Uber Pickups in April 2014") + 
     map_theme
   #ggsave(paste("hour-", str_int, ".jpg", sep=''))
   print(out_map)
 }
 
-start <- min(data$just_times)
-data$bin <- cut(data$just_times, breaks = start + seq(0, 60*60*24, by = 60*60), labels = 0:23)
 plot_time(0)
 
 full_plot <- function() {
@@ -63,4 +64,4 @@ full_plot <- function() {
 }
 
 saveGIF(full_plot(), interval = 0.2)
-saveVideo(full_plot(), interval = 0.2, ani.width = 800, ani.height = 600)
+saveVideo(full_plot(), interval = 0.2, ani.width = 800, ani.height = 800)
