@@ -30,8 +30,9 @@ plt <- ggplot(data, aes(x=Lon, y=Lat)) +
   scale_y_continuous(limits=c(min_Lat, max_Lat)) +
   labs(title="NYC viewed by Uber Pickups in April 2014") + 
   coord_equal()
-plt
+
 png("./nyc-uber-pickups.png", w=800, h=800, res=150)
+plt
 dev.off()
 
 map <- get_map(location="Empire State Building", zoom=12)
@@ -64,4 +65,4 @@ full_plot <- function() {
 }
 
 saveGIF(full_plot(), interval = 0.2)
-saveVideo(full_plot(), interval = 0.2, ani.width = 800, ani.height = 800)
+saveVideo(full_plot(), interval = 0.2, ani.width = 480, ani.height = 480)
